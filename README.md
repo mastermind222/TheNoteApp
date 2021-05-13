@@ -3,9 +3,15 @@ Built using HTML,CSS,JavaScript and using Firebase as Realtime Database,you coul
 
 
 index.html --> launch page.
+
 login.html / login.js --> handles the login func
+
 signup.html / signup.js --> handles the signup func
+
 home.html/ home.js ---> handles the main func of creating deleting of notes
+
 about.html ----> simple about page
+
 thenotesapp.css ---> style for all the page except the about page
+
 aboust.css----> style for the about page
