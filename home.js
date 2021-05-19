@@ -10,10 +10,17 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 const dbRef = firebase.database()
+const auth = firebase.auth();
+let fsignout=0;
+//Authentication function to check if any user is logged in
+firebase.auth().onAuthStateChanged(function(user) {
 
+
+if(user){
 //dipslay
 console.log("Welcome to notes app. This is app.js");
 getNotesForThisUser().then(notes => display(notes)).catch(err => handleError(err))
+
 
 // If user adds a note, add it to the Firebase
 let addBtn = document.getElementById("addBtn");
@@ -33,6 +40,8 @@ addBtn.addEventListener("click", function(e) {
         window.alert("Warning: Empty Note")
   }
 });
+
+
 
 
 // Function to show elements from Firebase
@@ -129,7 +138,27 @@ async function getNotesForThisUser() {
     }
 
 }
+//LogOut Function
+document.querySelector('#signout').addEventListener('click', function () {
+    auth.signOut()
+        .then(() => {
+            // Sign-out successful.
+            window.alert("You have Logged Out Succesfully.");
+            window.location = "index.html";
+            fsignout=1;
+        }).catch((error) => {
+            // An error happened.
+            alert(error.message);
+        });
+});
 
+}
+
+else if(fsignout==0) {
+  window.alert("You need to LogIn First.Redirecting to Home Page.");
+  window.location="index.html";
+}
+});
 
 /*
 TODO: Further Features:
