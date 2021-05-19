@@ -4,6 +4,10 @@
 	align-content: center;
 	background-size: cover;
 }
+#addTxt{
+	border-radius: 10px;
+
+}
 #nothing{
 	text-align: center;
 }
