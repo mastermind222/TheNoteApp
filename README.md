@@ -17,7 +17,7 @@ thenotesapp.css ---> style for all the page except the about page
 about.css----> style for the about page
 
 
-Corrections Done Lately: isUserSigned is added.
+Corrections Done Lately: isUserSigned is added ,  editing notes is added.
 
 Pending Tasks:
 1.Add a Dark Mode.
