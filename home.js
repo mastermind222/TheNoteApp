@@ -12,13 +12,15 @@ firebase.analytics();
 const dbRef = firebase.database()
 const auth = firebase.auth();
 let fsignout = 0;
+let flagEdit=0;
+var editIndex=-1;
 //Authentication function to check if any user is logged in
 firebase.auth().onAuthStateChanged(function(user) {
 
 
     if (user) {
              console.log("Welcome to notes app. This is app.js");
-        getNotesForThisUser().then(notes => display(notes)).catch(err => handleError(err))
+           getNotesForThisUser().then(notes => display(notes)).catch(err => handleError(err))
             
     	} else if(fsignout==0)  {
         window.alert("You need to LogIn First.Redirecting to Home Page.");
@@ -34,16 +36,30 @@ firebase.auth().onAuthStateChanged(function(user) {
         let addBtn = document.getElementById("addBtn");
         addBtn.addEventListener("click", function(e) {
 
-            if (document.getElementById("addTxt").value != "") {
+            if (document.getElementById("addTxt").value != "" && flagEdit===0) {
                 saveNoteToFirebase(document.getElementById("addTxt").value)
                     .then(async res => {
                         let notes = await getNotesForThisUser()
-                        console.log(notes)
                         display(notes)
                         document.getElementById("addTxt").value = "";
                     })
                     .catch(err => console.log(err))
-            } else {
+            }else if(flagEdit===1){
+                
+                if(document.getElementById("addTxt").value !=""){
+                    updateNote(localStorage.getItem("uid"),editIndex,document.getElementById("addTxt").value);
+                    getNotesForThisUser().then(notes => display(notes)).catch(err => handleError(err));
+                    document.getElementById("addTxt").value='';
+
+                }
+                else window.alert("Warning: Empty Note")
+
+                flagEdit=0;
+                editIndex=-1;
+
+                replaceButtonText('addBtn','Add Note');
+            }
+            else {
                 window.alert("Warning: Empty Note")
             }
         });
@@ -63,6 +79,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                             <h5 class="card-title">Note ${i + 1}</h5>
                             <p class="card-text"> ${notes[k]}</p>
                             <button id="${k}" onclick="deleteNote(this.id)" class="btn btn-primary">Delete Note</button>
+                            <button id="${k}" onclick="editNote(this.id)" class="btn btn-primary">Edit Note</button>
                         </div>
                     </div>`;
                 i++
@@ -75,10 +92,36 @@ firebase.auth().onAuthStateChanged(function(user) {
             return;
         }
 
+        //function to write data
+        function updateNote(userId, noteId, newBody) {
+            let updates={['/notes/' + userId + '/' + noteId] : newBody}
+            
+            return firebase.database().ref().update(updates, (e) => {
+              if (e) console.log(e)
+            })
+          }
+
+        //Function to edit a note
+        function editNote(index){
+            const uid = localStorage.getItem("uid")
+            var adaRef = firebase.database().ref('notes/' + uid + '/' + index);
+            adaRef.get().then((snapshot) => {
+                if (snapshot.exists()) {
+                   var crrntNote=snapshot.val();
+                   document.getElementById("addTxt").value =crrntNote;
+                   replaceButtonText('addBtn','Update Note');
+                   flagEdit=1;
+                   editIndex=index;
+                  
+                } 
+              }).catch((error) => {
+                console.error(error);
+              });
+        }
+
         // Function to delete a note
         function deleteNote(index) {
             const uid = localStorage.getItem("uid")
-            console.log("I am deleting", index);
             var adaRef = firebase.database().ref('notes/' + uid + '/' + index);
             adaRef.remove()
                 .then(function() {
@@ -90,6 +133,31 @@ firebase.auth().onAuthStateChanged(function(user) {
 
 
 
+        }
+
+
+
+        function replaceButtonText(buttonId, text)
+        {
+            if (document.getElementById)
+            {
+                var button=document.getElementById(buttonId);
+                if (button)
+                {
+                if (button.childNodes[0])
+                {
+                    button.childNodes[0].nodeValue=text;
+                }
+                else if (button.value)
+                {
+                    button.value=text;
+                }
+                else //if (button.innerHTML)
+                {
+                    button.innerHTML=text;
+                }
+                }
+            }
         }
 
 
