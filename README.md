@@ -4,7 +4,7 @@ Built using HTML,CSS,JavaScript and using Firebase as Realtime Database,you coul
 ## View Live App
 Hosted app at  **https://mastermind222.github.io/TheNoteApp/**
 
-##Tech Stack Used
+## Tech Stack Used
 
 ### Backend
 **Firebase** - Document database - to store data as JSON. Used for storing user data and notes.
