@@ -76,7 +76,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 
             Object.keys(notes).forEach(function(k, i) {
                 html += `
-                <div class="noteCard my-2 mx-2 card" content="centre" style="width: 21rem;">
+                <div class="noteCard my-2 mx-2 card" content="centre" style="width: 100%;">
                         <div class="card-body" id="note-card">
                             <h5 class="card-title">Note ${i + 1}</h5>
                             <p class="card-text"> ${notes[k]}</p>
@@ -106,6 +106,7 @@ firebase.auth().onAuthStateChanged(function(user) {
         //Function to edit a note
         function editNote(index){
             const uid = localStorage.getItem("uid")
+            window.scrollTo(0, 0);
             var adaRef = firebase.database().ref('notes/' + uid + '/' + index);
             adaRef.get().then((snapshot) => {
                 if (snapshot.exists()) {
