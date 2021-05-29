@@ -35,13 +35,14 @@ firebase.auth().onAuthStateChanged(function(user) {
         // If user adds a note, add it to the Firebase
         let addBtn = document.getElementById("addBtn");
         addBtn.addEventListener("click", function(e) {
-
+            document.getElementById("addTxt").value=CKEDITOR.instances["addTxt"].getData(); //getting data from editor
             if (document.getElementById("addTxt").value != "" && flagEdit===0) {
                 saveNoteToFirebase(document.getElementById("addTxt").value)
                     .then(async res => {
                         let notes = await getNotesForThisUser()
                         display(notes)
                         document.getElementById("addTxt").value = "";
+                        CKEDITOR.instances["addTxt"].setData('');
                     })
                     .catch(err => console.log(err))
             }else if(flagEdit===1){
@@ -50,6 +51,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                     updateNote(localStorage.getItem("uid"),editIndex,document.getElementById("addTxt").value);
                     getNotesForThisUser().then(notes => display(notes)).catch(err => handleError(err));
                     document.getElementById("addTxt").value='';
+                    CKEDITOR.instances["addTxt"].setData('');
 
                 }
                 else window.alert("Warning: Empty Note")
@@ -75,7 +77,7 @@ firebase.auth().onAuthStateChanged(function(user) {
             Object.keys(notes).forEach(function(k, i) {
                 html += `
                 <div class="noteCard my-2 mx-2 card" content="centre" style="width: 21rem;">
-                        <div class="card-body">
+                        <div class="card-body" id="note-card">
                             <h5 class="card-title">Note ${i + 1}</h5>
                             <p class="card-text"> ${notes[k]}</p>
                             <button id="${k}" onclick="deleteNote(this.id)" class="btn btn-primary">Delete Note</button>
@@ -109,6 +111,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                 if (snapshot.exists()) {
                    var crrntNote=snapshot.val();
                    document.getElementById("addTxt").value =crrntNote;
+                   CKEDITOR.instances["addTxt"].setData(crrntNote);
                    replaceButtonText('addBtn','Update Note');
                    flagEdit=1;
                    editIndex=index;
@@ -126,6 +129,7 @@ firebase.auth().onAuthStateChanged(function(user) {
             adaRef.remove()
                 .then(function() {
                     getNotesForThisUser().then(notes => display(notes)).catch(err => handleError(err))
+                    CKEDITOR.instances["addTxt"].setData('');
                 })
                 .catch(function(error) {
                     console.log("Remove failed: " + error.message)
