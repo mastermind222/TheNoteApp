@@ -1,24 +1,22 @@
 # TheNoteApp
-Built using HTML,CSS,JavaScript and using Firebase as Realtime Database,you could now save and access your notes on the go anywhere and anytime.
+Built using HTML,CSS,JavaScript and using Firebase as Realtime Database,you could now save and access your notes on the go anywhere and anytime. It includes an online editor which have several tools like *bold, italic, font-size, font-weight, color etc.*
+
+## View Live App
+Hosted app at  **https://mastermind222.github.io/TheNoteApp/**
+
+##Tech Stack Used
+
+### Backend
+**Firebase** - Document database - to store data as JSON. Used for storing user data and notes.
+
+### Frontend
+Frontend has been completely made using pure **HTML**, **Javascript** and **CSS**. All the tools functions have been implemented using executeCommand function provided by DOM.
+
+# ScreenShot
+![image](https://user-images.githubusercontent.com/60010884/120077281-45fa7980-c0c7-11eb-8470-838c1657593b.png)
+![image](https://user-images.githubusercontent.com/60010884/120077443-14ce7900-c0c8-11eb-95d8-ba571a6d7987.png)
 
 
-index.html --> launch page.
-
-login.html / login.js --> handles the login func
-
-signup.html / signup.js --> handles the signup func
-
-home.html/ home.js ---> handles the main func of creating deleting of notes
-
-about.html ----> simple about page
-about.js ---> handles the logout request from the about page.
-
-thenotesapp.css ---> style for all the page except the about page
-about.css----> style for the about page
-
-
-Corrections Done Lately: isUserSigned is added ,  editing notes is added.
-
-Pending Tasks:
-1.Add a Dark Mode.
-2.Save Note Title Wise.
+## Pending Tasks:
+* Add a Dark Mode.
+* Save Note Title Wise.
