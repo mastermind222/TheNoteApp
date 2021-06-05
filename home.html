@@ -10,7 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js">
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
   
 </head>
 <body class="mainbody2">
@@ -33,7 +33,7 @@
 
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" id="searchTxt" type="search" placeholder="Search" aria-label="Search">
+                <input class="form-control mr-sm-2" id="searchTxt" type="search" placeholder="Search Title" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
@@ -46,9 +46,12 @@
             <div class="card-body">
                 <h5 class="card-title">Add a Note</h5>
                 <div class="form-group">
-                    <textarea class="form-control" id="addTxt" rows="3" placeholder="Type Here!!"></textarea>
+                    <textarea class="form-control" id="addTitle" rows="1" placeholder="Title Here!!"></textarea>
+                    <br>
+                    <textarea class="form-control" id="addTxt" rows="1" placeholder="Type Here!!"></textarea>
                 </div>
                 <button class="btn btn-primary" id="addBtn">Add Note</button>
+                <button class="btn btn-primary" id="clearAll">Clear All</button>
             </div>
         </div>
         <hr>
@@ -58,6 +61,7 @@
     </div>
     <script>
         CKEDITOR.replace('addTxt');
+        config.editorplaceholder = 'Type your comment…';
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
