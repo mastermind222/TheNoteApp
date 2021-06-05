@@ -32,37 +32,51 @@ firebase.auth().onAuthStateChanged(function(user) {
         
 
 
-        // If user adds a note, add it to the Firebase
+        //Clears the contents
         let addBtn = document.getElementById("addBtn");
+        let clearBtn=document.getElementById("clearAll")
+        clearBtn.addEventListener("click",e=>{
+            window.location.reload();
+        })
+
+        // If user adds a note, add it to the Firebase
         addBtn.addEventListener("click", function(e) {
             document.getElementById("addTxt").value=CKEDITOR.instances["addTxt"].getData(); //getting data from editor
-            if (document.getElementById("addTxt").value != "" && flagEdit===0) {
-                saveNoteToFirebase(document.getElementById("addTxt").value)
+            if (document.getElementById("addTxt").value != "" && document.getElementById("addTitle").value!=""  && flagEdit===0) {
+                saveNoteWithTitle(document.getElementById("addTitle").value,document.getElementById("addTxt").value)
                     .then(async res => {
                         let notes = await getNotesForThisUser()
                         display(notes)
                         document.getElementById("addTxt").value = "";
+                        document.getElementById("addTitle").value="";
                         CKEDITOR.instances["addTxt"].setData('');
                     })
                     .catch(err => console.log(err))
             }else if(flagEdit===1){
                 
-                if(document.getElementById("addTxt").value !=""){
-                    updateNote(localStorage.getItem("uid"),editIndex,document.getElementById("addTxt").value);
+                if(document.getElementById("addTxt").value !="" && document.getElementById("addTitle").value!=""){
+                    updateNote(localStorage.getItem("uid"),editIndex,document.getElementById("addTxt").value,document.getElementById("addTitle").value);
                     getNotesForThisUser().then(notes => display(notes)).catch(err => handleError(err));
-                    document.getElementById("addTxt").value='';
-                    CKEDITOR.instances["addTxt"].setData('');
-
                 }
-                else window.alert("Warning: Empty Note")
-
+                else {
+                if(document.getElementById("addTitle").value=="")
+                window.alert("Warning: Empty Note Title")
+                else 
+                window.alert("Warning: Empty Note Content")
+                }
+                document.getElementById("addTxt").value='';
+                document.getElementById("addTitle").value='';
+                CKEDITOR.instances["addTxt"].setData('');
                 flagEdit=0;
                 editIndex=-1;
 
                 replaceButtonText('addBtn','Add Note');
             }
             else {
-                window.alert("Warning: Empty Note")
+                if(document.getElementById("addTitle").value=="")
+                window.alert("Warning: Empty Note Title")
+                else 
+                window.alert("Warning: Empty Note Content")
             }
         });
 
@@ -73,17 +87,29 @@ firebase.auth().onAuthStateChanged(function(user) {
         function display(notes) {
             let i = 1;
             let html = "";
-
             Object.keys(notes).forEach(function(k, i) {
+                if(notes[k].title!=undefined){
                 html += `
-                <div class="noteCard my-2 mx-2 card" content="centre" style="width: 100%;">
+                <div class="noteCard my-2 mx-2 card" content="centre" style="width:100%;" >
                         <div class="card-body" id="note-card">
-                            <h5 class="card-title">Note ${i + 1}</h5>
-                            <p class="card-text"> ${notes[k]}</p>
+                            <h5 class="card-title">${notes[k].title}</h5>
+                            <p class="card-text" > ${notes[k].content}</p>
                             <button id="${k}" onclick="deleteNote(this.id)" class="btn btn-primary">Delete Note</button>
                             <button id="${k}" onclick="editNote(this.id)" class="btn btn-primary">Edit Note</button>
                         </div>
                     </div>`;
+                }
+                else{
+                    html += `
+                <div class="noteCard my-2 mx-2 card" content="centre" style="width:100%;" >
+                        <div class="card-body" id="note-card">
+                            <h5 class="card-title">Note ${i+1} (You can Now edit Title)</h5>
+                            <p class="card-text" > ${notes[k]}</p>
+                            <button id="${k}" onclick="deleteNote(this.id)" class="btn btn-primary">Delete Note</button>
+                            <button id="${k}" onclick="editNote(this.id)" class="btn btn-primary">Edit Note</button>
+                        </div>
+                    </div>`;
+                }
                 i++
             });
             let notesElm = document.getElementById("notes");
@@ -95,9 +121,10 @@ firebase.auth().onAuthStateChanged(function(user) {
         }
 
         //function to write data
-        function updateNote(userId, noteId, newBody) {
-            let updates={['/notes/' + userId + '/' + noteId] : newBody}
-            
+        function updateNote(userId, noteId, newBody, newTitle) {
+
+            let updates={['/notes/' + userId + '/' + noteId + '/content'] : newBody, 
+            ['/notes/' + userId + '/' + noteId + '/title'] : newTitle}
             return firebase.database().ref().update(updates, (e) => {
               if (e) console.log(e)
             })
@@ -111,7 +138,8 @@ firebase.auth().onAuthStateChanged(function(user) {
             adaRef.get().then((snapshot) => {
                 if (snapshot.exists()) {
                    var crrntNote=snapshot.val();
-                   document.getElementById("addTxt").value =crrntNote;
+                   document.getElementById("addTitle").value =crrntNote.title;
+                   document.getElementById("addTxt").value =crrntNote.content;
                    CKEDITOR.instances["addTxt"].setData(crrntNote);
                    replaceButtonText('addBtn','Update Note');
                    flagEdit=1;
@@ -173,7 +201,7 @@ firebase.auth().onAuthStateChanged(function(user) {
             // console.log('Input event fired!', inputVal);
             let noteCards = document.getElementsByClassName('noteCard');
             Array.from(noteCards).forEach(function(element) {
-                let cardTxt = element.getElementsByTagName("p")[0].innerText;
+                let cardTxt = element.getElementsByClassName("card-title")[0].innerText;
                 if (cardTxt.toLowerCase().includes(inputVal)) {
                     element.style.display = "block";
                 } else {
@@ -182,22 +210,26 @@ firebase.auth().onAuthStateChanged(function(user) {
                 // console.log(cardTxt);
             })
         })
-
+        //Saving Note with title
         async function saveNoteWithTitle(title, content) {
             const uid = localStorage.getItem("uid")
 
             const userNoteRef = dbRef.ref('notes/' + uid)
-            const noteKey = userNoteRef.push().key
-            let upd = {
-                ['/notes/' + uid + noteKey]: {
+            let upd = 
+                {
                     title,
                     content
                 }
-            }
-
-            return await dbRef.update(upd)
+            console.log(upd);
+            let notes = await getNotesForThisUser()
+            return await userNoteRef.set({
+                ...notes,
+                
+                [Date.now()]: upd
+            })
+            
         }
-
+        /*
         async function saveNoteToFirebase(content) {
             const uid = localStorage.getItem("uid")
             //window.alert("Successfully Added");
@@ -207,7 +239,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                 ...notes,
                 [Date.now()]: content
             })
-        }
+        }*/
 
         async function getNotesForThisUser() {
             const uid = localStorage.getItem("uid")
