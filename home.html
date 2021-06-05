@@ -10,7 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js">
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.16.1/standard-all/ckeditor.js"></script>
   
 </head>
 <body class="mainbody2">
@@ -48,7 +48,7 @@
                 <div class="form-group">
                     <textarea class="form-control" id="addTitle" rows="1" placeholder="Title Here!!"></textarea>
                     <br>
-                    <textarea class="form-control" id="addTxt" rows="1" placeholder="Type Here!!"></textarea>
+                    <textarea class="form-control" id="addTxt" rows="10" placeholder="Type Here!!"></textarea>
                 </div>
                 <button class="btn btn-primary" id="addBtn">Add Note</button>
                 <button class="btn btn-primary" id="clearAll">Clear All</button>
@@ -60,9 +60,12 @@
         <div id="notes" class="row container-fluid"> </div>
     </div>
     <script>
-        CKEDITOR.replace('addTxt');
-        config.editorplaceholder = 'Type your comment…';
-    </script>
+        CKEDITOR.replace('addTxt', {
+          extraPlugins: 'editorplaceholder',
+          editorplaceholder: 'Start typing here...',
+          uiColor:'#F8F9FA'
+        });
+      </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
