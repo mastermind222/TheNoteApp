@@ -4,6 +4,7 @@
 	align-content: center;
 	background-size: cover;
 }
+
 #addTxt{
 	border-radius: 10px;
 
@@ -47,4 +48,11 @@
 
 .display-4{
 	text-align: center;
+}
+.control-label{
+	font-size:small;
+	font-style: italic;
+	display: block;
+	text-align: right;
+    
 }
