@@ -96,6 +96,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                             <p class="card-text" > ${notes[k].content}</p>
                             <button id="${k}" onclick="deleteNote(this.id)" class="btn btn-primary">Delete Note</button>
                             <button id="${k}" onclick="editNote(this.id)" class="btn btn-primary">Edit Note</button>
+                            <label class="control-label">Last Updated: ${notes[k].lastUpdated}</label>
                         </div>
                     </div>`;
                 }
@@ -122,9 +123,11 @@ firebase.auth().onAuthStateChanged(function(user) {
 
         //function to write data
         function updateNote(userId, noteId, newBody, newTitle) {
-
+            var d = new Date(Date.now())
+            var lastUpdated= d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear()+','+d.getHours()+':'+d.getMinutes();
             let updates={['/notes/' + userId + '/' + noteId + '/content'] : newBody, 
-            ['/notes/' + userId + '/' + noteId + '/title'] : newTitle}
+            ['/notes/' + userId + '/' + noteId + '/title'] : newTitle,
+            ['/notes/' + userId + '/' + noteId + '/lastUpdated'] : lastUpdated}
             return firebase.database().ref().update(updates, (e) => {
               if (e) console.log(e)
             })
@@ -213,12 +216,14 @@ firebase.auth().onAuthStateChanged(function(user) {
         //Saving Note with title
         async function saveNoteWithTitle(title, content) {
             const uid = localStorage.getItem("uid")
-
+            var d = new Date(Date.now())
+            var lastUpdated= d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear()+','+d.getHours()+':'+d.getMinutes();
             const userNoteRef = dbRef.ref('notes/' + uid)
             let upd = 
                 {
                     title,
-                    content
+                    content,
+                    lastUpdated
                 }
             console.log(upd);
             let notes = await getNotesForThisUser()
