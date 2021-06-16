@@ -2,9 +2,8 @@
 <html>
 <head>
 	<title>Home</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="thenotesapp.css">
-<!--	<link rel="stylesheet" type="text/css" href="home.css">-->
 	<link rel="stylesheet" type="text/css" href="login.html">
 	<link rel="stylesheet" type="text/css" href="signup.html">
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -51,8 +50,8 @@
                     <br>
                     <textarea class="form-control" id="addTxt" rows="10" placeholder="Type Here!!"></textarea>
                 </div>
-                <button class="btn btn-success" id="addBtn">Add Note</button>
-                <button class="btn btn-danger" id="clearAll">Clear All</button>
+                <button class="btn btn-primary" id="addBtn">Add Note</button>
+                <button class="btn btn-primary" id="clearAll">Clear All</button>
             </div>
         </div>
         <hr>
@@ -60,6 +59,16 @@
         <hr>
         <div id="notes" class="row container-fluid"> </div>
     </div>
+
+
+    <footer class="footer  bg-light py-3" style="background-color: #F8F9FA;">
+        <div class="container">
+            <span class="text-muted">&copy THE NOTESAPP</span>
+        </div>
+      </footer>
+
+
+
     <script>
         CKEDITOR.replace('addTxt', {
           extraPlugins: 'editorplaceholder',
