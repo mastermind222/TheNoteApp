@@ -94,7 +94,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                         <div class="card-body" id="note-card">
                             <h5 class="card-title">${notes[k].title}</h5>
                             <p class="card-text" > ${notes[k].content}</p>
-                            <button id="${k}" onclick="deleteNote(this.id)" class="btn btn-primary">Delete Note</button>
+                            <button id="${k}" onclick="deleteNote(this.id)" class="btn btn-danger">Delete Note</button>
                             <button id="${k}" onclick="editNote(this.id)" class="btn btn-primary">Edit Note</button>
                             <label class="control-label">Last Updated: ${notes[k].lastUpdated}</label>
                         </div>
@@ -106,7 +106,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                         <div class="card-body" id="note-card">
                             <h5 class="card-title">Note ${i+1} (You can Now edit Title)</h5>
                             <p class="card-text" > ${notes[k]}</p>
-                            <button id="${k}" onclick="deleteNote(this.id)" class="btn btn-primary">Delete Note</button>
+                            <button id="${k}" onclick="deleteNote(this.id)" class="btn btn-danger">Delete Note</button>
                             <button id="${k}" onclick="editNote(this.id)" class="btn btn-primary">Edit Note</button>
                         </div>
                     </div>`;
