@@ -49,8 +49,8 @@
 .display-4{
 	text-align: center;
 }
-.control-label{
-	font-size:small;
+.card-footer{
+	font-size:medium;
 	font-style: italic;
 	display: block;
 	text-align: right;
