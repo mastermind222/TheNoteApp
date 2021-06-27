@@ -19,4 +19,4 @@ Frontend has been completely made using pure **HTML**, **Javascript** and **CSS*
 
 ## Pending Tasks:
 * Add a Dark Mode.
-* Save Note Title Wise.
+
