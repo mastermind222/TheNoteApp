@@ -20,3 +20,5 @@ Frontend has been completely made using pure **HTML**, **Javascript** and **CSS*
 ## Pending Tasks:
 * Add a Dark Mode.
 
+## Author(s):
+###### [Mohit Kumar](https://github.com/mastermind222)
