@@ -10,7 +10,7 @@ Hosted app at  **https://mastermind222.github.io/TheNoteApp/**
 **Firebase** - Document database - to store data as JSON. Used for storing user data and notes.
 
 ### Frontend
-Frontend has been completely made using pure **HTML**, **Javascript** and **CSS**. All the tools functions have been implemented using executeCommand function provided by DOM.
+Frontend has been completely made using pure **HTML**, **Javascript** and **CSS**. All the tools functions have been implemented using executeCommand function provided by DOM .
 
 # ScreenShot
 ![image](https://user-images.githubusercontent.com/60010884/120077281-45fa7980-c0c7-11eb-8470-838c1657593b.png)
